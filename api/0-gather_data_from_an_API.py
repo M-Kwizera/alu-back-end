@@ -1,34 +1,28 @@
 #!/usr/bin/python3
-""" Library to gather todo list from an API """
+""" gets todo 
+list back from an API """
 
-import urllib.request
 import json
+import requests
+import sys
 
-""" script to retrieve data from an API """
+if __name__ == "__main__":
+    employee_id = sys.argv[1]
 
+    user_url = "https://jsonplaceholder.typicode.com/users/{}".format(
+        employee_id)
+    user_response = requests.get(user_url)
+    user = json.loads(user_response.text)
 
-employee_id = int(input("Enter the employee ID: "))
+    todos_url = "https://jsonplaceholder.typicode.com/users/{}/todos".format(
+        employee_id)
+    todos_response = requests.get(todos_url)
+    todos = json.loads(todos_response.text)
 
-# Make the API request to get the TODO list for the employee
-url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
-response = urllib.request.urlopen(url)
-todos = json.loads(response.read())
+    completed_tasks = [todo for todo in todos if todo['completed']]
 
-# Filter completed tasks
-completed_tasks = [todo for todo in todos if todo['completed']]
+    print("Employee {} is done with tasks ({}/{})".format(
+        user['name'], len(completed_tasks), len(todos)))
 
-# Make another API request to get the employee's name
-url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-response = urllib.request.urlopen(url)
-user = json.loads(response.read())
-employee_name = user['name']
-
-# Display the progress
-total_tasks = len(todos)
-completed_count = len(completed_tasks)
-print(
-    f"Employee {employee_name} is done with tasks ({completed_count}/{total_tasks}):")
-
-# Display the titles of completed tasks
-for task in completed_tasks:
-    print("\t", task['title'])
+    for task in completed_tasks:
+        print("\t{}".format(task["title"]))
