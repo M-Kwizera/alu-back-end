@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Retrieves todo list f """
+"""get TODO list"""
 
 import urllib.request
 import json
