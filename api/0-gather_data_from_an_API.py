@@ -2,8 +2,8 @@
 """get TODO list"""
 
 import json
-import requests
-import sys
+import urllib.request
+
 
 employee_id = int(input("Enter the employee ID: "))
 
