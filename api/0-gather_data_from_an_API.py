@@ -1,45 +1,29 @@
-#!/usr/bin/python3
-""" just using some extra modules """
-import requests
-import sys
+import urllib.request
+import json
 
+# Prompt the user for employee ID
+employee_id = int(input("Enter the employee ID: "))
 
-def getName():
-    """ getting user name """
-    payload = {'id': sys.argv[1]}
-    dataTwo = requests.get('https://jsonplaceholder.typicode.com/users',
-                           params=payload)
-    JDataTwo = dataTwo.json()
-    # print(JDataTwo[0]['name']
-    return JDataTwo[0]['name']
+# Make the API request to get the TODO list for the employee
+url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+response = urllib.request.urlopen(url)
+todos = json.loads(response.read())
 
+# Filter completed tasks
+completed_tasks = [todo for todo in todos if todo['completed']]
 
-def getTask():
-    """ get task numbers and todos done  """
-    data = requests.get('https://jsonplaceholder.typicode.com/todos')
-    ToDoList = []
-    taskToDo = 0
-    taskDone = 0
-    JData = data.json()
-    DataLength = len(JData)
-    for i in range(0, DataLength):
-        com = int(sys.argv[1])
-        if JData[i]['userId'] == com:
-            taskToDo += 1
-            if JData[i]['completed'] is True:
-                ToDoList.append(JData[i]['title'])
-                taskDone += 1
-    # print(taskToDo)
-    # print(taskDone)
-    # print(ToDoList)
-    print("Employee {} is done with tasks({}/{}):"
-          .format(getName(), taskDone, taskToDo))
-    Lvalue = len(ToDoList)
-    for j in range(0, Lvalue):
-        print("\t {}".format(ToDoList[j]))
+# Make another API request to get the employee's name
+url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+response = urllib.request.urlopen(url)
+user = json.loads(response.read())
+employee_name = user['name']
 
-""" addding docs everywhre """
+# Display the progress
+total_tasks = len(todos)
+completed_count = len(completed_tasks)
+print(
+    f"Employee {employee_name} is done with tasks ({completed_count}/{total_tasks}):")
 
-if __name__ == "__main__":
-    """ calling """
-    getTask()
+# Display the titles of completed tasks
+for task in completed_tasks:
+    print("\t", task['title'])
