@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """ Library to gather todo list from an API """
 
-import requests
-import sys
+import urllib.request
+import json
 
 """ script to retrieve data from an API """
 
