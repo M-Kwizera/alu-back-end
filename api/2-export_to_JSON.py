@@ -1,35 +1,35 @@
-#!/usr/bin/python3
-""" Call API and stores in a JSON file """
-import csv
 import json
 import requests
-from sys import argv
+import sys
 
+if __name__ == "__main__":
+    employee_id = int(sys.argv[1])
 
-if __name__ == '__main__':
-    userId = argv[1]
-    url_todo = 'https://jsonplaceholder.typicode.com/todos/'
-    url_user = 'https://jsonplaceholder.typicode.com/users/'
-    todo = requests.get(url_todo, params={'userId': userId})
-    user = requests.get(url_user, params={'id': userId})
+    # Make the API request to get the TODO list for the employee
+    todos_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+    response = requests.get(todos_url)
+    todos = json.loads(response.text)
 
-    todo_dict_list = todo.json()
-    user_dict_list = user.json()
-    task_list = []
-    user_tasks = {}
-    employee = user_dict_list[0].get('username')
+    # Filter completed tasks
+    completed_tasks = [task for task in todos if task['completed']]
 
-    with open("{}.json".format(userId), "w+") as jsonfile:
-        for task in todo_dict_list:
-            status = task.get('completed')
-            title = task.get('title')
-            task_dict = {}
-            task_dict['task'] = title
-            task_dict['completed'] = status
-            task_dict['username'] = employee
-            task_list.append(task_dict)
-        user_tasks[userId] = task_list
+    # Make another API request to get the employee's name
+    user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+    response = requests.get(user_url)
+    user = json.loads(response.text)
+    employee_name = user['name']
 
-        data = json.dumps(user_tasks)
-        jsonfile.write(data)
+    # Create a dictionary to store the TODO list progress
+    todo_progress = {
+        "employee_name": employee_name,
+        "completed_tasks": completed_tasks,
+        "total_tasks": len(todos),
+        "completed_count": len(completed_tasks)
+    }
 
+    # Export the TODO list progress to a JSON file
+    filename = f"employee_{employee_id}_todos.json"
+    with open(filename, 'w') as file:
+        json.dump(todo_progress, file, indent=4)
+
+    print(f"TODO list progress exported to {filename} successfully.")
