@@ -1,10 +1,9 @@
 #!/usr/bin/python3
-"""Retrieves todo list f"""
+"""get TODO list"""
 
-import urllib.request
 import json
-import csv
-"""Retrieves todo list f"""
+import requests
+import sys
 
 employee_id = int(input("Enter the employee ID: "))
 
