@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Gathers data from an API"""
+"""Takes in an employee ID and requests their to-do list"""
 import urllib.request
 import json
 
