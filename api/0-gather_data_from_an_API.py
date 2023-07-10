@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-"""Gathers data from an api using
-urllib"""
+"""Retrieves todo list f"""
+
 import urllib.request
 import json
 import csv
