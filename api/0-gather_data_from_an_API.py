@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-"""Exports data to CSV format"""
+"""Gathers data from an api using
+urllib"""
 import urllib.request
 import json
 import csv
