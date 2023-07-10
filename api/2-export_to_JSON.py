@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+""" Gets to export
+to JSON"""
+
 import json
 import requests
 import sys
