@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 """Exports data to CSV format"""
-
-# Prompt the user for employee ID
 import urllib.request
 import json
 import csv
