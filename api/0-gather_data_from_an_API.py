@@ -1,9 +1,10 @@
 #!/usr/bin/python3
-"""get TODO list"""
+""" Library to gather todo list from an API """
 
-import urllib.request
-import json
-import csv
+import requests
+import sys
+
+""" script to retrieve data from an API """
 
 
 employee_id = int(input("Enter the employee ID: "))
